@@ -1,11 +1,13 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(createGalleryItemsMarkup(galleryItems))
+// console.log(createGalleryItemsMarkup(galleryItems))
 
-const galleryContainer = document.querySelector(".gallery");
+
+const gallery = document.querySelector(".gallery");
 const itemsMarkup = createGalleryItemsMarkup(galleryItems);
-galleryContainer.insertAdjacentHTML('afterbegin', itemsMarkup)
+gallery.insertAdjacentHTML('afterbegin', itemsMarkup);
+
 
 function createGalleryItemsMarkup(galleryItems) {
     return galleryItems.map(({ original, preview, description  }) => {
@@ -17,7 +19,6 @@ function createGalleryItemsMarkup(galleryItems) {
             src="${preview}"
             data-source="${original}"
             alt="${description}"
-
           />
         </a>
       </div>
@@ -27,5 +28,25 @@ function createGalleryItemsMarkup(galleryItems) {
 }
 
 
+galleryContainer.addEventListener("click", onGalleryClick)
+
+function onGalleryClick (e) {
+  e.preventDefault();
+
+  if(!e.target.classList.contains(".gallery__image")) {
+    return
+  }
+
+  
+}
 
 // console.log(galleryItems);
+
+
+
+
+
+
+
+
+
