@@ -1,52 +1,56 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-// console.log(createGalleryItemsMarkup(galleryItems))
-
-
+// 1.Add code in HTML
+console.log(galleryItems);
 const gallery = document.querySelector(".gallery");
-const itemsMarkup = createGalleryItemsMarkup(galleryItems);
-gallery.insertAdjacentHTML('afterbegin', itemsMarkup);
+const itemsMarkup = galleryItems.map(
+    ({ preview, original, description }) =>
+      `<div class="gallery__item">
+    <a class="gallery__link" href="${original}">
+      <img
+        class="gallery__image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </div>`
+  )
+  .join("");
+gallery.insertAdjacentHTML('beforeend', itemsMarkup);
 
 
-function createGalleryItemsMarkup(galleryItems) {
-    return galleryItems.map(({ original, preview, description  }) => {
-        return `
-        <div class="gallery__item">
-        <a class="gallery__link" href="${original}">
-          <img
-            class="gallery__image"
-            src="${preview}"
-            data-source="${original}"
-            alt="${description}"
-          />
-        </a>
-      </div>
-        `
-    })
-    .join("")
-}
+// 2.Add big images
+gallery.addEventListener("click", onGalleryClick);
 
-
-galleryContainer.addEventListener("click", onGalleryClick)
-
-function onGalleryClick (e) {
+function onGalleryClick(e) {
   e.preventDefault();
 
-  if(!e.target.classList.contains(".gallery__image")) {
-    return
+  if(e.target.nodeName === "IMG"){
+    const instance = basicLightbox.create(`
+      <img src="${e.target.dataset.source}" width="1400" height="900">`
+      ,  
+      {
+        onShow: (instance) => {
+          document.addEventListener("keydown", closeFunction(instance));
+        },
+      },
+      {
+        onClose: (instance) => {
+          document.removeEventListener("keydown", closeFunction(instance));
+        },
+      }
+    )
+    instance.show()
   }
-
-  
 }
 
-// console.log(galleryItems);
-
-
-
-
-
-
-
-
-
+// 3.Function close on press Escape
+    function closeFunction (instance) {
+      return function (e) {
+              if(e.key === "Escape") {
+                return instance.close()
+              }
+            }
+    };
